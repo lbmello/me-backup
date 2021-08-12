@@ -1,0 +1,46 @@
+global_config:
+  log_path: /tmp/bkp/log/
+  log_level: DEBUG
+  host: "127.0.0.1"
+  user: lucas
+  crontab_path: /home/lucas/Documents/GitHub/linux-backup/crontab
+
+tasks:
+  - name: backup home
+    slug: bkp_home
+    src: /tmp/bkp/src1/
+    host: '127.0.0.1'
+    dst: /mnt/storage/backup/TESTE/dst1/
+    frequency: 
+      when: daily
+      at: 21:00
+      cron_syntax: 
+    exclude:
+      files:
+        - tst.txt
+        - .bashrc
+      extensions:
+        - md
+      folder:
+        - Arduino
+
+  - name: backup qualquer
+    slug: bkp_qqr
+    src: /tmp/bkp/src2/
+    dst: /mnt/storage/backup/TESTE/dst2/
+    frequency: 
+      when: ""
+      at: "21:00"
+    exclude:
+      files:
+        - tst1.txt
+        - tst2.txt
+        - .bashrc
+      extensions:
+        - doc
+        - docx
+        - csv
+        - jpg
+      folder:
+        - Documents
+        - Pictures
