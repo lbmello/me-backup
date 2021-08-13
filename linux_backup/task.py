@@ -44,7 +44,8 @@ class task:
         self.cron = _cron(
             commands = self.rsync,
             frequency = self.frequency,
-            path = global_config['crontab_path']
+            path = global_config['crontab_path'],
+            user = global_config['user']
         )
                 
         self.schedule()

@@ -4,14 +4,11 @@ from crontab import CronTab
 
 class cron:
 
-    def __init__(self, commands, frequency, path=None):
+    def __init__(self, commands, frequency, path='/etc/crontab', user='root'):
         self.commands = commands
         self.frequency = frequency
-
-        if not path:
-            self.path = '/etc/crontab'
-        else:
-            self.path = path
+        self.path = path
+        self.user = user
 
         self._attach_crontab()
 
