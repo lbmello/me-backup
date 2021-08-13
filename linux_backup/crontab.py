@@ -4,23 +4,36 @@ from crontab import CronTab
 
 class cron:
 
-    def __init__(self, commands, frequency, path=None):
+    def __init__(self, commands, frequency, path='/etc/crontab', user='root'):
         self.commands = commands
         self.frequency = frequency
-
-        if not path:
-            self.path = '/etc/crontab'
-        else:
-            self.path = path
+        self.path = path
+        self.user = user
 
         self._attach_crontab()
 
 
     def _attach_crontab(self):
-        """TODO: deve adicionar source do crontab dos bks no crontab principal."""
+        """Add the source to project's crontab file into /etc/crontab."""
+
+        cron_reference = "# me-backup source\n"
+        source = f"source {self.path}\n"
         
-        if self.path != '/etc/crontab':
-            ...
+        cron_file = open('/etc/crontab', 'r+')
+        cron_lines = cron_file.readlines()
+        
+        if self.path == '/etc/crontab':
+            print('ta no crontab')
+            for line in cron_lines:
+                if (cron_reference in line) and (self.commands not in cron_lines):
+                    cron_file.write(self.commands)
+        else:
+            print('ta no projeto')
+            for line in cron_lines:
+                if (cron_reference in line) and (source not in cron_lines):
+                    cron_file.write(source)
+
+        cron_file.close()
 
 
     def clear_crontab(self):

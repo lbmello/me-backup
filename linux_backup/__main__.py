@@ -11,10 +11,12 @@ if __name__ == "__main__":
         task_file = "/home/lucas/Documents/GitHub/linux-backup/tasks.yaml"
     )
 
-    # If exist, clear crontab file
-    if isfile(d.global_config['crontab_path']):
+    # Clear crontab file
+    try:
         crontab_file = open(d.global_config['crontab_path'], 'w')
         crontab_file.close()
+    except KeyError:
+        pass
 
     tasks = list()
 
