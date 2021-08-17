@@ -23,12 +23,11 @@ class cron:
         cron_lines = cron_file.readlines()
         
         if self.path == '/etc/crontab':
-            print('ta no crontab')
             for line in cron_lines:
+                print('linha', line)
                 if (cron_reference in line) and (self.commands not in cron_lines):
                     cron_file.write(self.commands)
         else:
-            print('ta no projeto')
             for line in cron_lines:
                 if (cron_reference in line) and (source not in cron_lines):
                     cron_file.write(source)

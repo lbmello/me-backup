@@ -12,11 +12,12 @@ if __name__ == "__main__":
     )
 
     # Clear crontab file
-    try:
-        crontab_file = open(d.global_config['crontab_path'], 'w')
-        crontab_file.close()
-    except KeyError:
-        pass
+    if d.global_config['crontab_path'] != '/etc/crontab':
+        try:
+            crontab_file = open(d.global_config['crontab_path'], 'w')
+            crontab_file.close()
+        except KeyError:
+            pass
 
     tasks = list()
 
