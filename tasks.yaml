@@ -16,13 +16,10 @@ tasks:
       at: 21:00
       cron_syntax: 
     exclude:
-      files:
-        - tst.txt
-        - .bashrc
       extensions:
-        - md
-      folder:
-        - Arduino
+        - txt
+
+
 
   - name: backup qualquer
     slug: bkp_qqr

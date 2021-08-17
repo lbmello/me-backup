@@ -28,6 +28,6 @@ if __name__ == "__main__":
             )
         )
 
-        #task_obj.run_now()
+        task_obj.run_now()
 
         tasks.append(task_obj)

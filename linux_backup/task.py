@@ -37,6 +37,7 @@ class task:
             self.frequency = global_config['frequency']
         else:
             logging.debug(f'Frequency of task {self.name} and global frequency not informed.')
+        
 
         # Create rsync commands
         self._process_rsync_commands()
