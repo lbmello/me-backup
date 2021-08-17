@@ -17,16 +17,21 @@ class backup:
         self.host = host
         self.user = user
 
-        cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.user}@{self.host}:{self.destination}"
-        
+        if self.exclude != None:
+            cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.user}@{self.host}:{self.destination}"
+        else:
+            cmd = f"rsync -av {self.source} {self.user}@{self.host}:{self.destination}"
+
         return cmd
 
 
     def create_rsync(self):
         """Create rsync full command with local src and dst."""
 
-        cmd = f"""rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.destination}"""
-        print('comando', cmd)
+        if self.exclude != None:
+            cmd = f"""rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.destination}"""
+        else:
+            cmd = f"""rsync -av {self.source} {self.destination}"""
         
         return cmd
 
