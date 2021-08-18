@@ -1,9 +1,7 @@
 
-from os.path import isfile
-
-
 from .data import data as _data
 from .task import task as _task
+from .log import log as _log
 
 
 if __name__ == "__main__":
@@ -18,6 +16,13 @@ if __name__ == "__main__":
             crontab_file.close()
         except KeyError:
             pass
+
+    # logging configs
+    l = _log(
+        path = d.global_config['log_path'],
+        level = d.global_config['log_level']
+    )
+
 
     tasks = list()
 

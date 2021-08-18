@@ -1,5 +1,5 @@
 global_config:
-  log_path: /tmp/bkp/log/
+  log_path: /home/lucas/Documents/GitHub/linux-backup/mebackup.log
   log_level: DEBUG
   host: "127.0.0.1"
   user: lucas
