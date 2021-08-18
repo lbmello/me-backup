@@ -12,32 +12,15 @@ tasks:
     host: '127.0.0.1'
     dst: /mnt/storage/backup/TESTE/dst1/
     frequency: 
-      when: daily
-      at: 21:00
-      cron_syntax: 
+      shortcut: hourly
     exclude:
       extensions:
         - txt
-
-
 
   - name: backup qualquer
     slug: bkp_qqr
     src: /tmp/bkp/src2/
     dst: /mnt/storage/backup/TESTE/dst2/
     frequency: 
-      when: ""
-      at: "21:00"
-    exclude:
-      files:
-        - tst1.txt
-        - tst2.txt
-        - .bashrc
-      extensions:
-        - doc
-        - docx
-        - csv
-        - jpg
-      folder:
-        - Documents
-        - Pictures
+      shortcut: daily
+      

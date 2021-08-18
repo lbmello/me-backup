@@ -24,7 +24,6 @@ class cron:
         
         if self.path == '/etc/crontab':
             for line in cron_lines:
-                print('linha', line)
                 if (cron_reference in line) and (self.commands not in cron_lines):
                     cron_file.write(self.commands)
         else:
@@ -50,6 +49,65 @@ class cron:
             tabfile=self.path
         )
         self.job = self._cron.new(command=self.commands)
+        
+        if 'shortcut' in self.frequency:
+            shortcut = self.frequency['shortcut']
+
+            if shortcut == 'hourly':
+                self.job.hour.every(1)
+            
+            elif shortcut == 'daily':
+                self.job.hour.every(24)
+
+            elif 'weekly' in shortcut:
+                if shortcut == 'weekly':
+                    self.job.day.every(7)
+                elif shortcut == 'weekly_sunday':
+                    self.job.dow.on('SUN')
+                elif shortcut == 'weekly_monday':
+                    self.job.dow.on('MON')
+                elif shortcut == 'weekly_tuesday':
+                    self.job.dow.on('TUE')
+                elif shortcut == 'weekly_wednesday':
+                    self.job.dow.on('WED')       
+                elif shortcut == 'weekly_thursday':
+                    self.job.dow.on('THU')
+                elif shortcut == 'weekly_friday':
+                    self.job.dow.on('FRI')     
+                elif shortcut == 'weekly_saturday':
+                    self.job.dow.on('SAT')
+
+            elif 'monthly' in shortcut:
+                if shortcut == 'monthly':
+                    self.job.day.every(30)
+                elif shortcut == 'monthly_january':
+                    self.job.month.on('JAN')
+                elif shortcut == 'monthly_februay':
+                    self.job.month.on('FEB')
+                elif shortcut == 'monthly_march':
+                    self.job.month.on('MAR')
+                elif shortcut == 'monthly_april':
+                    self.job.month.on('APR')
+                elif shortcut == 'monthly_may':
+                    self.job.month.on('MAY')
+                elif shortcut == 'monthly_june':
+                    self.job.month.on('JUN')
+                elif shortcut == 'monthly_july':
+                    self.job.month.on('JUL')
+                elif shortcut == 'monthly_august':
+                    self.job.month.on('AUG')
+                elif shortcut == 'monthly_september':
+                    self.job.month.on('SEP')
+                elif shortcut == 'monthly_october':
+                    self.job.month.on('OCT')
+                elif shortcut == 'monthly_november':
+                    self.job.month.on('NOV')
+                elif shortcut == 'monthly_december':
+                    self.job.month.on('DEC')
+
+        elif 'cron_syntax' in self.frequency:
+            ...# (self.frequency['cron_syntax'])
+        
         self.job.minute.every(1)
 
         self._cron.write()
