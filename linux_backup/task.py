@@ -55,8 +55,6 @@ class task:
             user = global_config['user']
         )
                 
-        self.schedule()
-
 
     def schedule(self):
         """."""

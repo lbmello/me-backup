@@ -8,6 +8,7 @@ authors = ["Lucas <lucasbmello96@gmail.com>"]
 python = "^3.9"
 PyYAML = "latest"
 python-crontab = "^2.5.1"
+click = "^8.0.1"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.9.6"

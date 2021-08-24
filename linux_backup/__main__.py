@@ -1,7 +1,8 @@
 
+from .cli import cli as _cli
 from .data import data as _data
-from .task import task as _task
 from .log import log as _log
+from .task import task as _task
 
 
 if __name__ == "__main__":
@@ -24,16 +25,17 @@ if __name__ == "__main__":
     )
 
 
+    # instance of tasks and CLI
     tasks = list()
 
-    for t in d.tasks:
+    for task in d.tasks:
         task_obj = (
             _task(
-                task = t,
+                task = task,
                 global_config = d.global_config
             )
         )
 
-        task_obj.run_now()
-
         tasks.append(task_obj)
+
+    c = _cli(tasks = tasks)
