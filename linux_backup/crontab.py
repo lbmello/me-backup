@@ -42,11 +42,11 @@ class cron:
 
 
     def create_crontab(self):
-        """TODO: Deve ler as tarefas com os tempos e adicionar parametros no crontab."""
+        """Create a CronTab object, process the string of time and configure crontab."""
 
         self._cron = CronTab(
-            user='lucas',
-            tabfile=self.path
+            user = self.user,
+            tabfile = self.path
         )
         self.job = self._cron.new(command=self.commands)
         
@@ -106,9 +106,8 @@ class cron:
                     self.job.month.on('DEC')
 
         elif 'cron_syntax' in self.frequency:
-            ...# (self.frequency['cron_syntax'])
+            ...
+            # TODO: Implantar opcao para input do padrao do cron no yaml direto pro crontab
         
-        self.job.minute.every(1)
-
         self._cron.write()
 
