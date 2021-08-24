@@ -1,0 +1,23 @@
+global_config:
+  log_path: /home/lucas/Documents/GitHub/linux-backup/mebackup.log
+  log_level: DEBUG
+  user: lucas
+  crontab_path: /home/lucas/Documents/GitHub/linux-backup/crontab
+
+tasks:
+  - name: backup home files
+    slug: bkp_home
+    src: /home/
+    dst: /mnt/storage/backup/home/
+    frequency: 
+      shortcut: hourly
+    exclude:
+      extensions:
+        - txt
+      folder:
+        - .ssh
+        - .gnome
+        - .config
+        - .cache
+        - VMs
+      

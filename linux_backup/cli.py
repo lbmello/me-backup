@@ -28,8 +28,19 @@ class cli:
                 task.show_rsync_script()
 
 
+        @click.command(name = 'generate_yaml', help = 'Create a tasks.yaml model file.')
+        @click.argument('crontab_file', type=click.File('wb'))
+        def generate_yaml(crontab_file):
+            with open('task_example.yaml', 'r') as input:
+                for line in input:
+                    crontab_file.write(
+                        bytes(line, encoding='utf-8')
+                    )
+
+
         main_cli.add_command(now)
         main_cli.add_command(schedule)
         main_cli.add_command(rsync)
+        main_cli.add_command(generate_yaml)
         
         main_cli()
