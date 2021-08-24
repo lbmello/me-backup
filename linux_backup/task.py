@@ -65,12 +65,16 @@ class task:
     def run_now(self):
         """Run command right now."""
 
-        print('comando -> ', self.rsync)
-
         out = subprocess.getoutput(self.rsync)
 
         print(out)
         print('___________________')
+
+
+    def show_rsync_script(self):
+        """Show the exact rsync command, not run os schedule."""
+
+        print(self.rsync)
 
 
     def _process_rsync_commands(self):
