@@ -48,6 +48,7 @@ class task:
         # Create rsync commands
         self._process_rsync_commands()
 
+        # TODO: Implantar tratamento de usuario e path do crontab nao informado
         self.cron = _cron(
             commands = self.rsync,
             frequency = self.frequency,
@@ -57,13 +58,13 @@ class task:
                 
 
     def schedule(self):
-        """."""
+        """Schedule the rsync over cron."""
 
         self.cron.create_crontab()
 
 
     def run_now(self):
-        """Run command right now."""
+        """Run command right now with subprocess and print the stdout."""
 
         out = subprocess.getoutput(self.rsync)
 
