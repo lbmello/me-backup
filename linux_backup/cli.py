@@ -16,7 +16,7 @@ class cli:
                 task.run_now()
 
 
-        @click.command(name = 'shedule', help = 'Schedule the tasks to run using your time configurations.')
+        @click.command(name = 'schedule', help = 'Schedule the tasks to run using your time configurations.')
         def schedule():
             for task in self.tasks:
                 task.schedule()
