@@ -17,15 +17,21 @@ class backup:
         self.host = host
         self.user = user
 
-        cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.user}@{self.host}:{self.destination}"
-        
+        if self.exclude != None:
+            cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.user}@{self.host}:{self.destination}"
+        else:
+            cmd = f"rsync -av {self.source} {self.user}@{self.host}:{self.destination}"
+
         return cmd
 
 
     def create_rsync(self):
         """Create rsync full command with local src and dst."""
 
-        cmd = f"""rsync -av --exclude="{self._create_exclude_pattern()}" {self.source} {self.destination}"""
+        if self.exclude != None:
+            cmd = f"""rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.destination}"""
+        else:
+            cmd = f"""rsync -av {self.source} {self.destination}"""
         
         return cmd
 
@@ -37,16 +43,32 @@ class backup:
 
         exclude_dict = set()
 
-        if 'files' in self.exclude:
-            for r in self.exclude['files']:
-                exclude_dict.add(r)
+        if len(self.exclude) == 1:
+            if 'files' in self.exclude:
+                temp_value = f"{self.exclude['files']}"
+            
+            if 'extensions' in self.exclude:
+                temp_value = f"'*.{self.exclude['extensions'][0]}'"
 
-        if 'extensions' in self.exclude:
-            for r in self.exclude['extensions']:
-                exclude_dict.add(f"*.{r}")
-        
-        if 'folder' in self.exclude:
-            for r in self.exclude['folder']:
-                exclude_dict.add(f"{r}/")
+            if 'folder' in self.exclude:
+                temp_value = f"{self.exclude['folder']}/"
+            else:
+                ...
 
-        return exclude_dict
+        elif len(self.exclude) > 1:
+            if 'files' in self.exclude:
+                for r in self.exclude['files']:
+                    exclude_dict.add(r)
+
+            if 'extensions' in self.exclude:
+                for r in self.exclude['extensions']:
+                    exclude_dict.add(f"*.{r}")
+            
+            if 'folder' in self.exclude:
+                for r in self.exclude['folder']:
+                    exclude_dict.add(f"{r}/")
+
+            # at end transform dict to string and take off space of comma dict
+            temp_value = str(exclude_dict).replace(', ', ',')
+
+        return temp_value

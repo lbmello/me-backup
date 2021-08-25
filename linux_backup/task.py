@@ -13,10 +13,9 @@ class task:
         self.slug = task['slug']
         self.src = task['src']
         self.dst = task['dst']
-        self.exclude = task['exclude']
         self.frequency = task['frequency']
 
-        # Verify if host, user and frequency are informed in global and task section
+        # Global check - Verify if host, user and frequency are informed in global or task section
         if 'host' in task:
             self.host = task['host']
         elif 'host' in global_config:
@@ -29,18 +28,27 @@ class task:
         elif 'user' in global_config:
             self.user = global_config['user']
         else:
-            logging.debug(f'User of task {self.name} and global user not informed.')
+            logging.debug(f"User of task {self.name} and global user not informed.")
 
         if 'frequency' in task:
             self.frequency = task['frequency']
         elif 'frequency' in global_config:
             self.frequency = global_config['frequency']
         else:
-            logging.debug(f'Frequency of task {self.name} and global frequency not informed.')
-
+            logging.debug(f"Frequency of task {self.name} and global frequency not informed.")
+        
+        # Task checks - Verify if exclude was informed
+        if 'exclude' in task:
+            self.exclude = task['exclude']
+        else:
+            self.exclude = None
+            logging.debug(f"Exclude field not informed in {self.name} task.")
+        
+ 
         # Create rsync commands
         self._process_rsync_commands()
 
+        # TODO: Implantar tratamento de usuario e path do crontab nao informado
         self.cron = _cron(
             commands = self.rsync,
             frequency = self.frequency,
@@ -48,24 +56,26 @@ class task:
             user = global_config['user']
         )
                 
-        self.schedule()
-
 
     def schedule(self):
-        """."""
+        """Schedule the rsync over cron."""
 
         self.cron.create_crontab()
 
 
     def run_now(self):
-        """Run command right now."""
-
-        print('comando -> ', self.rsync)
+        """Run command right now with subprocess and print the stdout."""
 
         out = subprocess.getoutput(self.rsync)
 
         print(out)
         print('___________________')
+
+
+    def show_rsync_script(self):
+        """Show the exact rsync command, not run os schedule."""
+
+        print(self.rsync)
 
 
     def _process_rsync_commands(self):
