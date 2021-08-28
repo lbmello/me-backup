@@ -5,6 +5,8 @@ import subprocess
 
 from .backup import backup as _backup
 from .crontab import cron as _cron
+from .wake_on_lan import wake_on_lan as _wol
+
 
 class task:
 
@@ -43,7 +45,14 @@ class task:
         else:
             self.exclude = None
             logging.debug(f"Exclude field not informed in {self.name} task.")
-        
+
+        # Wake on Lan - If true, send magic packet to MAC
+        if 'wake_on_lan' in task:
+            self.wake_on_lan = True
+            self.enabled = task['wake_on_lan']['enabled']
+            self.mac_address = task['wake_on_lan']['mac_address']
+            self._run_wol()
+               
  
         # Create rsync commands
         self._process_rsync_commands()
@@ -96,3 +105,14 @@ class task:
             bkp.create_rsync()
 
         self.rsync = bkp.create_rsync()
+
+    
+    def _run_wol(self):
+        """Instance wake_on_lan and run method to send meagic packet."""
+
+        wol = _wol(
+            mac_address = self.mac_address 
+        )
+
+        wol.send_package()
+É N

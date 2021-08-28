@@ -9,6 +9,9 @@ tasks:
     slug: bkp_home
     src: /home/
     dst: /mnt/storage/backup/home/
+    wake_on_lan:
+      enabled: True
+      mac_address: 'MAC_ADDR'
     frequency: 
       shortcut: hourly
     exclude:
