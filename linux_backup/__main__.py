@@ -3,11 +3,17 @@ from .cli import cli as _cli
 from .data import data as _data
 from .log import log as _log
 from .task import task as _task
+from .wake_on_lan import wake_on_lan as _wol
 
 
 if __name__ == "__main__":
+    # TODO: reimplementar leitura do path desse arquivo
+    conf_file = open('/home/lucas/Documents/GitHub/linux-backup/config', 'r')
+    conf = conf_file.readlines()
+    conf = (conf[0].split('=')[1])
+
     d = _data(
-        task_file = "/home/lucas/Documents/GitHub/linux-backup/tasks.yaml"
+        task_file = conf
     )
 
     # Clear crontab file
