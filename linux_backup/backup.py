@@ -39,8 +39,6 @@ class backup:
     def _create_exclude_pattern(self):
         """Create the patterns to exclude command."""
 
-        # TODO: Ajustar para patterns validos
-
         exclude_dict = set()
 
         if len(self.exclude) == 1:

@@ -115,4 +115,3 @@ class task:
         )
 
         wol.send_package()
-É N

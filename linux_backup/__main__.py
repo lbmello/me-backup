@@ -3,7 +3,6 @@ from .cli import cli as _cli
 from .data import data as _data
 from .log import log as _log
 from .task import task as _task
-from .wake_on_lan import wake_on_lan as _wol
 
 
 if __name__ == "__main__":
