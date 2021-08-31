@@ -7,9 +7,10 @@ from .task import task as _task
 
 if __name__ == "__main__":
     # TODO: reimplementar leitura do path desse arquivo
-    conf_file = open('/home/lucas/Documents/GitHub/linux-backup/config', 'r')
+    conf_file = open('/home/lucas/GitHub/me-backup/config', 'r')
     conf = conf_file.readlines()
     conf = (conf[0].split('=')[1])
+    conf = conf.replace('\n', '')
 
     d = _data(
         task_file = conf
