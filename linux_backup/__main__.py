@@ -1,19 +1,23 @@
 
+import os
+
+
 from .cli import cli as _cli
 from .data import data as _data
+from .definitions import ROOT_DIR
 from .log import log as _log
 from .task import task as _task
+from .utils import process_config_lines
+
 
 
 if __name__ == "__main__":
-    # TODO: reimplementar leitura do path desse arquivo
-    conf_file = open('/home/lucas/GitHub/me-backup/config', 'r')
-    conf = conf_file.readlines()
-    conf = (conf[0].split('=')[1])
-    conf = conf.replace('\n', '')
+    config_file_path = os.path.join(ROOT_DIR, 'config')
+    conf_file = open(config_file_path, 'r')
+    config = process_config_lines(conf_file)
 
     d = _data(
-        task_file = conf
+        task_file = config['task_file']
     )
 
     # Clear crontab file
