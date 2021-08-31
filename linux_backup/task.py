@@ -48,10 +48,9 @@ class task:
 
         # Wake on Lan - If true, send magic packet to MAC
         if 'wake_on_lan' in task:
-            self.wake_on_lan = True
-            self.enabled = task['wake_on_lan']['enabled']
-            self.mac_address = task['wake_on_lan']['mac_address']
-            self._run_wol()
+            self.wol_enabled = task['wake_on_lan']['enabled']
+            self.wol_mac_address = task['wake_on_lan']['mac_address']
+            self.wol_run()
                
  
         # Create rsync commands
@@ -88,6 +87,17 @@ class task:
         print(self.rsync)
 
 
+    def wol_run(self):
+        """Instance wake_on_lan and run method to send meagic packet."""
+
+        if self.wol_enabled:
+            wol = _wol(
+                mac_address = self.wol_mac_address 
+            )
+
+            wol.send_package()
+
+
     def _process_rsync_commands(self):
         """Instance backup object and get the return of create_rsync function."""
         
@@ -104,13 +114,3 @@ class task:
             )
         else:
             self.rsync = bkp.create_rsync()
-
-    
-    def _run_wol(self):
-        """Instance wake_on_lan and run method to send meagic packet."""
-
-        wol = _wol(
-            mac_address = self.mac_address 
-        )
-
-        wol.send_package()
