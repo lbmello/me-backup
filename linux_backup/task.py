@@ -77,7 +77,8 @@ class task:
 
         out = subprocess.getoutput(self.rsync)
 
-        print(out)
+        print('saida', out)
+        print('comando', self.rsync)
         print('___________________')
 
 
@@ -97,14 +98,12 @@ class task:
         )
 
         if self.host and self.user:
-            bkp.create_remote_rsync(
+            self.rsync = bkp.create_remote_rsync(
                 host = self.host, 
                 user = self.user,
             )
         else:
-            bkp.create_rsync()
-
-        self.rsync = bkp.create_rsync()
+            self.rsync = bkp.create_rsync()
 
     
     def _run_wol(self):

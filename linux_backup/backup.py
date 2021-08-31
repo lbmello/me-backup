@@ -18,9 +18,9 @@ class backup:
         self.user = user
 
         if self.exclude != None:
-            cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.user}@{self.host}:{self.destination}"
+            cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.user}@{self.host}:{self.source} {self.destination}"
         else:
-            cmd = f"rsync -av {self.source} {self.user}@{self.host}:{self.destination}"
+            cmd = f"rsync -av {self.user}@{self.host}:{self.source} {self.destination}"
 
         return cmd
 
