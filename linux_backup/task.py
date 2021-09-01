@@ -20,22 +20,22 @@ class task:
         # Global check - Verify if host, user and frequency are informed in global or task section
         if 'host' in task:
             self.host = task['host']
-        elif 'host' in global_config:
-            self.host = global_config['host']
+        elif 'default_host' in global_config:
+            self.host = global_config['default_host']
         else:
             logging.debug(f'Host of task {self.name} and global host not informed.')
  
         if 'user' in task:
             self.user = task['user']
-        elif 'user' in global_config:
-            self.user = global_config['user']
+        elif 'default_user' in global_config:
+            self.user = global_config['default_user']
         else:
             logging.debug(f"User of task {self.name} and global user not informed.")
 
         if 'frequency' in task:
             self.frequency = task['frequency']
-        elif 'frequency' in global_config:
-            self.frequency = global_config['frequency']
+        elif 'default_frequency' in global_config:
+            self.frequency = global_config['default_frequency']
         else:
             logging.debug(f"Frequency of task {self.name} and global frequency not informed.")
         
@@ -61,7 +61,7 @@ class task:
             commands = self.rsync,
             frequency = self.frequency,
             path = global_config['crontab_path'],
-            user = global_config['user']
+            user = self.user
         )
                 
 

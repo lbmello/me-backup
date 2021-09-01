@@ -14,6 +14,7 @@ from .utils import process_config_lines
 if __name__ == "__main__":
     config_file_path = os.path.join(ROOT_DIR, 'config')
     conf_file = open(config_file_path, 'r')
+    
     config = process_config_lines(conf_file)
 
     d = _data(
@@ -21,19 +22,18 @@ if __name__ == "__main__":
     )
 
     # Clear crontab file
-    if d.global_config['crontab_path'] != '/etc/crontab':
+    if config['crontab_path'] != '/etc/crontab':
         try:
-            crontab_file = open(d.global_config['crontab_path'], 'w')
+            crontab_file = open(config['crontab_path'], 'w')
             crontab_file.close()
         except KeyError:
             pass
 
     # logging configs
     l = _log(
-        path = d.global_config['log_path'],
-        level = d.global_config['log_level']
+        path = config['log_path'],
+        level = config['log_level']
     )
-
 
     # instance of tasks and CLI
     tasks = list()
@@ -42,7 +42,7 @@ if __name__ == "__main__":
         task_obj = (
             _task(
                 task = task,
-                global_config = d.global_config
+                global_config = config
             )
         )
 

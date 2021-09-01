@@ -9,7 +9,6 @@ class data:
     def __init__(self, task_file):
         self.task_file = task_file
 
-        self.global_config = dict()
         self.tasks = dict()
 
         if self.is_config_exist:
@@ -20,7 +19,6 @@ class data:
                 
                 _raw_object.close()
 
-                self.global_config = self.yaml_file['global_config']
                 self.tasks = self.yaml_file['tasks']
 
             except:
