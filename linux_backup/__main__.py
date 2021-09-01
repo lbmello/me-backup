@@ -1,5 +1,6 @@
 
 import os
+import logging
 
 
 from .cli import cli as _cli
@@ -21,13 +22,14 @@ if __name__ == "__main__":
         task_file = config['task_file']
     )
 
-    # Clear crontab file
-    if config['crontab_path'] != '/etc/crontab':
-        try:
-            crontab_file = open(config['crontab_path'], 'w')
-            crontab_file.close()
-        except KeyError:
-            pass
+    # Clear project crontab file, if them exist
+    if 'default_crontab_path' in config:
+        if config['default_crontab_path'] != '/etc/crontab':
+            try:
+                crontab_file = open(config['default_crontab_path'], 'w')
+                crontab_file.close()
+            except KeyError:
+                logging.error('error while reading project crontab file.')
 
     # logging configs
     l = _log(

@@ -25,12 +25,20 @@ class task:
         else:
             logging.debug(f'Host of task {self.name} and global host not informed.')
  
+
+        if 'default_crontab_path' in global_config:
+            self.crontab_path = global_config['default_crontab_path']
+        else:
+            self.crontab_path = '/etc/crontab'
+
+
         if 'user' in task:
             self.user = task['user']
         elif 'default_user' in global_config:
             self.user = global_config['default_user']
         else:
             logging.debug(f"User of task {self.name} and global user not informed.")
+
 
         if 'frequency' in task:
             self.frequency = task['frequency']
@@ -39,12 +47,14 @@ class task:
         else:
             logging.debug(f"Frequency of task {self.name} and global frequency not informed.")
         
+
         # Task checks - Verify if exclude was informed
         if 'exclude' in task:
             self.exclude = task['exclude']
         else:
             self.exclude = None
             logging.debug(f"Exclude field not informed in {self.name} task.")
+
 
         # Wake on Lan - If true, send magic packet to MAC
         if 'wake_on_lan' in task:
@@ -56,11 +66,10 @@ class task:
         # Create rsync commands
         self._process_rsync_commands()
 
-        # TODO: Implantar tratamento de usuario e path do crontab nao informado
         self.cron = _cron(
             commands = self.rsync,
             frequency = self.frequency,
-            path = global_config['crontab_path'],
+            path = self.crontab_path,
             user = self.user
         )
                 
