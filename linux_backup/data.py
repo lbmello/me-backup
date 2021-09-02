@@ -9,7 +9,6 @@ class data:
     def __init__(self, task_file):
         self.task_file = task_file
 
-        self.global_config = dict()
         self.tasks = dict()
 
         if self.is_config_exist:
@@ -20,14 +19,14 @@ class data:
                 
                 _raw_object.close()
 
+                self.tasks = self.yaml_file['tasks']
+
             except:
                 logging.critical(f"Fail to read {self.task_file} file!")
 
         else:
             logging.critical(f"File {self.task_file} not exist.")
 
-        self.global_config = self.yaml_file['global_config']
-        self.tasks = self.yaml_file['tasks']
 
 
     def is_config_exist(self):
