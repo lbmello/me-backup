@@ -46,7 +46,23 @@ class task:
             self.frequency = global_config['default_frequency']
         else:
             logging.debug(f"Frequency of task {self.name} and global frequency not informed.")
-        
+
+
+        if 'remote_src' in task:
+            self.remote_src = task['remote_src']
+        elif 'remote_src' in global_config:
+            self.remote_src = global_config['remote_src']
+        else:
+            self.remote_src = False
+
+
+        if 'remote_dst' in task:
+            self.remote_dst = task['remote_dst']
+        elif 'remote_dst' in global_config:
+            self.remote_dst = global_config['remote_dst']
+        else:
+            self.remote_dst = False
+      
 
         # Task checks - Verify if exclude was informed
         if 'exclude' in task:
@@ -113,13 +129,19 @@ class task:
         bkp = _backup(
             source = self.src,
             destination = self.dst, 
-            exclude = self.exclude
+            exclude = self.exclude,
+            remote_dst = self.remote_dst,
+            remote_src = self.remote_src
         )
 
-        if self.host and self.user:
+        if not self.remote_src and not self.remote_dst:
+            self.rsync = bkp.create_rsync()
+        
+        elif self.host and self.user:
             self.rsync = bkp.create_remote_rsync(
                 host = self.host, 
                 user = self.user,
             )
+            
         else:
-            self.rsync = bkp.create_rsync()
+            logging.error(f"error to process rsync logic.")

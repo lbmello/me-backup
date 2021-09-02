@@ -1,1 +1,7 @@
-task_file=/home/lucas/Documents/GitHub/linux-backup/tasks.yaml
+task_file = /home/lucas/Documents/GitHub/linux-backup/tasks.yaml
+log_path = /home/lucas/Documents/GitHub/linux-backup/mebackup.log
+log_level = DEBUG
+default_host = 127.0.0.1
+default_user = lucas
+default_crontab_path = /home/lucas/Documents/GitHub/linux-backup/crontab
+remote_dst = iasdasdij
