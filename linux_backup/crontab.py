@@ -16,6 +16,8 @@ class cron:
     def _attach_crontab(self):
         """Add the source to project's crontab file into /etc/crontab."""
 
+        # TODO: alterar do crontab geral para o usuário (crontab -e)
+
         cron_reference = "# me-backup source\n"
         source = f"source {self.path}\n"
         
