@@ -24,12 +24,12 @@ if __name__ == "__main__":
 
     # Clear project crontab file, if them exist
     if 'default_crontab_path' in config:
-        if config['default_crontab_path'] != '/etc/crontab':
+        if config['default_crontab_path'] != ('/etc/crontab' or 'user'):
             try:
                 crontab_file = open(config['default_crontab_path'], 'w')
                 crontab_file.close()
             except KeyError:
-                logging.error('error while reading project crontab file.')
+                logging.error(f"error while reading project crontab file in {config['default_crontab_path']}.")
 
     # logging configs
     l = _log(
@@ -50,4 +50,7 @@ if __name__ == "__main__":
 
         tasks.append(task_obj)
 
-    c = _cli(tasks = tasks)
+    c = _cli(
+        tasks = tasks,
+        config = config
+    )

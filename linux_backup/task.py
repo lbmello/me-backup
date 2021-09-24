@@ -26,18 +26,29 @@ class task:
             logging.debug(f'Host of task {self.name} and global host not informed.')
  
 
-        if 'default_crontab_path' in global_config:
-            self.crontab_path = global_config['default_crontab_path']
-        else:
-            self.crontab_path = '/etc/crontab'
-
-
         if 'user' in task:
             self.user = task['user']
         elif 'default_user' in global_config:
             self.user = global_config['default_user']
         else:
             logging.debug(f"User of task {self.name} and global user not informed.")
+
+
+        if 'default_crontab_path' in global_config:
+            if global_config['default_crontab_path'] == 'user':
+                self.crontab_path = f"/var/spool/cron/{self.user}"
+                logging.debug(f"Crontab file configured in {self.crontab_path}")
+            
+            elif global_config['default_crontab_path'] == 'crontab':
+                self.crontab_path = f"/etc/crontab"
+                logging.debug(f"Crontab file configured in {self.crontab_path}")
+            
+            else:
+                self.crontab_path = global_config['default_crontab_path']
+                logging.debug(f"Crontab file configured in {self.crontab_path}")
+        else:
+            self.crontab_path = '/etc/crontab'
+            logging.debug(f"Crontab file configured by default in {self.crontab_path}")
 
 
         if 'frequency' in task:
@@ -62,8 +73,8 @@ class task:
             self.remote_dst = global_config['remote_dst']
         else:
             self.remote_dst = False
-      
 
+        
         # Task checks - Verify if exclude was informed
         if 'exclude' in task:
             self.exclude = task['exclude']
@@ -77,7 +88,27 @@ class task:
             self.wol_enabled = task['wake_on_lan']['enabled']
             self.wol_mac_address = task['wake_on_lan']['mac_address']
             self.wol_run()
-               
+
+
+        # Type of execution select, sync of version the files at destination
+        # TODO: terminar implantação dessa parte, considerando como executar o sync e o versionh
+
+        if 'copy_config' in task:
+            if task['copy_config']['type'] == 'sync':
+                self.copy_config = {
+                    'copy_type': task['copy_config']['type']
+                }
+            elif task['copy_config']['type'] == 'version':
+                self.copy_config = {
+                    'copy_type': task['copy_config']['type'],
+                    'versions_qtd': task['copy_config']['versions_qtd'],
+                    'tmp_folder': task['copy_config']['tmp_folder']
+                }
+            else:
+                self.copy_config = {
+                    'copy_type': 'sync'
+                }
+      
  
         # Create rsync commands
         self._process_rsync_commands()
@@ -134,9 +165,11 @@ class task:
             remote_src = self.remote_src
         )
 
+        # If remote src and dst are False, create rsync commands locally
         if not self.remote_src and not self.remote_dst:
             self.rsync = bkp.create_rsync()
         
+        # If host and user are informed, create remote rsync
         elif self.host and self.user:
             self.rsync = bkp.create_remote_rsync(
                 host = self.host, 

@@ -1,10 +1,13 @@
 
 import click
 
+from .install import install as _install
+
 
 class cli:
-    def __init__(self, tasks):
+    def __init__(self, tasks, config):
         self.tasks = tasks
+        self.config = config
 
         @click.group()
         def main_cli():
@@ -38,9 +41,19 @@ class cli:
                     )
 
 
+        @click.command(name = 'install', help = 'Create needed files (run with sudo).')
+        def install():
+            i = _install(config=self.config)
+            i.create_files()
+
+
         main_cli.add_command(now)
         main_cli.add_command(schedule)
         main_cli.add_command(rsync)
         main_cli.add_command(generate_yaml)
+
+        if 'instaled' in config:
+            if config['instaled'] == 'False':
+                main_cli.add_command(install)
         
         main_cli()

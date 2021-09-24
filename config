@@ -3,5 +3,5 @@ log_path = /home/lucas/Documents/GitHub/linux-backup/mebackup.log
 log_level = DEBUG
 default_host = 127.0.0.1
 default_user = lucas
-default_crontab_path = /home/lucas/Documents/GitHub/linux-backup/crontab
-remote_dst = iasdasdij
+default_crontab_path = user
+instaled = False
