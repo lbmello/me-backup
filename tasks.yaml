@@ -1,21 +1,20 @@
-global_config:
-  log_path: /home/lucas/GitHub/me-backup/mebackup.log
-  log_level: DEBUG
-  user: lucas
-  crontab_path: /home/lucas/GitHub/me-backup/crontab
-
 tasks:
   - name: backup home
     slug: bkp_home
     src: /home/lucas/Arduino
-    host: '192.168.15.50'
-    user: lucas
-    dst: /mnt/storage/backup/TESTE/dst1/
+    remote_src: False
+    dst: /mnt/storage/backup/TESTE/dst1/Arduino
+    remote_dst: False
+    copy_config:
+      type: sync
     wake_on_lan:
       enabled: True
       mac_address: 'd8:9c:67:07:87:e3'
     frequency: 
-      shortcut: hourly
+      shortcut: daily
     exclude:
       extensions:
         - txt
+      folder:
+        - .ssh
+  
