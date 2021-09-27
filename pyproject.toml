@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "linux-backup"
+name = "me_backup"
 version = "0.1.0"
-description = ""
+description = "Simple linux backup controled by a YAML file."
 authors = ["Lucas <lucasbmello96@gmail.com>"]
 
 [tool.poetry.dependencies]
