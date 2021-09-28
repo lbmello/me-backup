@@ -5,16 +5,19 @@ import logging
 
 from .cli import cli as _cli
 from .data import data as _data
-from .definitions import ROOT_DIR
+from .definitions import ROOT_DIR, CONFIG_PATH
 from .log import log as _log
 from .task import task as _task
-from .utils import process_config_lines
+from .utils import process_config_lines, is_config_exist, create_config_file
 
 
 
 if __name__ == "__main__":
-    config_file_path = os.path.join(ROOT_DIR, 'config')
-    conf_file = open(config_file_path, 'r')
+    if is_config_exist(CONFIG_PATH):
+        conf_file = open(CONFIG_PATH, 'r')
+    else:
+        create_config_file(CONFIG_PATH)
+        conf_file = open(CONFIG_PATH, 'r')
     
     config = process_config_lines(conf_file)
 
@@ -51,6 +54,7 @@ if __name__ == "__main__":
         tasks.append(task_obj)
 
     c = _cli(
-        tasks = tasks,
-        config = config
+        config = CONFIG_PATH,
+        tasks = tasks
     )
+

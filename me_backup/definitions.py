@@ -2,4 +2,5 @@
 import os
 
 
-ROOT_DIR = os.path.abspath(os.curdir)
+CONFIG_PATH = '/etc/me-backup/config'
+ROOT_DIR = os.path.dirname(CONFIG_PATH)
