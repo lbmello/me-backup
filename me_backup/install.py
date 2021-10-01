@@ -8,33 +8,38 @@ from shutil import chown
 
 class install:
 
-    def __init__(self):
-        self.instaled = None        
+    def __init__(self, config, config_obj):
+        self.config_obj = config_obj
+        self.config = config
 
-
-    def validate_installation(self, config):
+  
+    def validate_installation(self):
         """Check if the instaled parameter is true in config file."""
 
-        if config['instaled'] == ('True' or 'true'):
-            self.instaled = True
+        if 'instaled' in self.config:
+            if self.config['instaled'] == ('True' or 'true'):
+                self.instaled = True
+            else:
+                self.instaled = False
         else:
-            self.instaled = False
+            logging.debug('instaled parameter not present at config file.')
 
         return self.instaled
 
 
-    def crete_basic_file(self, filepath):
-        """Create projects folder into the custom path."""
-        
+    def close_file(self):
+        self.config_obj.close_file()
+
+    def set_instaled_true(self):
+        self.config_obj.set_instaled_true()
 
 
-    def create_crontab_files(self, config):
+    def create_crontab_files(self):
         """Create crontab file to default_user in config file."""
 
-        # TODO: CORRIGIR PERMISSIONAMENTO
-        default_user = config['default_user']
-        default_group = 'lucas'
-        permission = stat.S_IRWXU + stat.S_IRWXG + stat.S_IRWXO
+        default_user = self.config['default_user']
+        default_group = self.config['default_user']
+        permission = stat.S_IRWXU + stat.S_IRWXG
 
         files = [
             f"/var/spool/cron/{default_user}"

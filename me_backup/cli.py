@@ -8,9 +8,9 @@ from .install import install as _install
 class cli:
     def __init__(self, tasks, config):
         self.tasks = tasks
-        self.config = config
+        self.config_obj = config
+        self.config = self.config_obj.process_config_lines()
         self.instaled = None
-
 
         @click.group()
         def main_cli():
@@ -45,13 +45,21 @@ class cli:
 
 
         @click.command(name = 'install', help = 'Create needed files (run with sudo).')
-        @click.argument('filepath', type=click.Path())
-        def install(filepath):
-            i = _install()
-            i.crete_basic_file(filepath)
-            #self.instaled = i.validate_installation(config=self.config)
-            #i.create_crontab_files(config=self.config)
+        def install():
+            i = _install(
+                config=self.config,
+                config_obj=self.config_obj
+            )
+
+            self.instaled = i.validate_installation()
+
+            if not self.instaled:
+                i.create_crontab_files()
+                i.set_instaled_true()
+
+            i.close_file()
             
+        print('instaled', self.instaled)
 
         if not self.instaled:
             main_cli.add_command(install)
@@ -61,9 +69,6 @@ class cli:
             main_cli.add_command(rsync)
             main_cli.add_command(generate_yaml)
         
-        '''if 'instaled' in config:
-            if config['instaled'] == 'False':
-        '''
                 
         
         main_cli()

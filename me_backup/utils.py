@@ -12,7 +12,7 @@ def is_config_exist(config_path):
 
 def create_config_file(config_path):
 
-    print('Me-backup never runned, this follow steps will create the tool folder and config file into /etc/me-backup!')
+    print('Me-backup never runned, this follow steps will create the tool folder and config file into /etc/me-backup! (need sudo)')
 
     user = input("Default User: [root] ") or 'root',
     task_file = input("Task file: [/etc/me-backup/tasks.yaml] ") or '/etc/me-backup/tasks.yaml'
@@ -22,7 +22,7 @@ def create_config_file(config_path):
     default_crontab_path = input(f"Default crontab path: [/var/spool/{user[0]}] ") or f"/var/spool/{user[0]}"
 
     lines = [
-        f"user = {user[0]}\n", 
+        f"default_user = {user[0]}\n", 
         f"task_file = {task_file}\n", 
         f"log_path = {log_path}\n",
         f"log_level = {log_level}\n",
