@@ -5,11 +5,12 @@ import os
 class config:
     def __init__(self, config_path):
         self.config_path = config_path
+        print(self.config_path)
 
         if self.is_config_exist():
-            with open(self.config_path, 'r') as config_file:
-                self.config_lines = config_file.readlines()
-            self.config_file = open(self.config_path, 'w+')
+            self.config_file = open(self.config_path, 'r')
+            self.config_lines = self.config_file.readlines()
+            #self.config_file = open(self.config_path, 'w+')
         else:
             self.config_file = open(self.config_path, 'w+')
             self.create_config_file()
@@ -76,10 +77,12 @@ class config:
             f"log_path = {log_path}\n",
             f"log_level = {log_level}\n",
             f"default_host = {default_host}\n",
-            f"default_crontab_path = {default_crontab_path}\n"]
+            f"default_crontab_path = {default_crontab_path}\n",
+            f"instaled = false\n"]
         
         if self.is_config_exist():
             self.config_file.writelines(lines)
+            self.config_lines = lines
         else:
             os.mkdir(os.path.dirname(self.config_path))
             self.config_file.writelines(lines)

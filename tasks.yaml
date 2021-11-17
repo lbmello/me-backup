@@ -8,7 +8,7 @@ tasks:
     copy_config:
       type: sync
     wake_on_lan:
-      enabled: True
+      enabled: False
       mac_address: 'd8:9c:67:07:87:e3'
     frequency: 
       shortcut: daily

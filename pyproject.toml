@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "me_backup"
-version = "0.1.0"
+version = "0.1.16"
 description = "Simple linux backup controled by a YAML file."
 authors = ["Lucas <lucasbmello96@gmail.com>"]
 

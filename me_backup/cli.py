@@ -10,7 +10,7 @@ class cli:
         self.tasks = tasks
         self.config_obj = config
         self.config = self.config_obj.process_config_lines()
-        self.instaled = None
+        self.instaled = self.config['instaled']
 
         @click.group()
         def main_cli():
@@ -52,16 +52,20 @@ class cli:
             )
 
             self.instaled = i.validate_installation()
+            print(f'status do instaled {type(self.instaled)}')
 
+            # TODO: Ajust this part to read a boolean, not string
             if not self.instaled:
                 i.create_crontab_files()
-                i.set_instaled_true()
+                #i.set_instaled_true()
+                i.fill_default_task_file()
 
             i.close_file()
             
         print('instaled', self.instaled)
 
-        if not self.instaled:
+        # TODO: Ajust this part to read a boolean, not string
+        if self.instaled == 'false' or self.instaled == 'False':
             main_cli.add_command(install)
         else:
             main_cli.add_command(now)
