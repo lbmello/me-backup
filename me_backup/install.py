@@ -88,9 +88,10 @@ class install:
     def fill_default_task_file(self):
         """Fill the default task_file with task_example.yaml data."""
 
-        example_task_lines = open("task_example.yaml", 'r').readlines()
-        default_task_lines = open(f"{self.config['task_file']}", 'r').readlines()
+        module_path = path.abspath(path.dirname(__file__))
 
+        example_task_lines = open((path.join(module_path, "task_example.yaml")),'r').readlines()
+        default_task_lines = open(f"{self.config['task_file']}", 'r').readlines()
         if not default_task_lines:
             with open(f"{self.config['task_file']}", 'a') as f:
                 f.writelines(example_task_lines)

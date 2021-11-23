@@ -1,0 +1,19 @@
+tasks:
+  - name: backup home
+    slug: bkp_home
+    src: /home/lucas/Arduino
+    remote_src: False
+    dst: /mnt/storage/backup/TESTE/dst1/Arduino
+    remote_dst: False
+    copy_config:
+      type: sync
+    wake_on_lan:
+      enabled: False
+      mac_address: 'd8:9c:67:07:87:e3'
+    frequency: 
+      shortcut: daily
+    exclude:
+      extensions:
+        - txt
+      folder:
+        - .ssh
