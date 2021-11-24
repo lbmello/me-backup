@@ -65,7 +65,9 @@ class config:
 
         print('Me-backup never runned, this follow steps will create the tool folder and config file into /etc/me-backup! (need sudo)')
 
-        user = input("Default User: [root] ") or 'root',
+        current_user =  os.getlogin()
+
+        user = input(f"Default User: [{current_user}] ") or f"{current_user}",
         task_file = input("Task file: [/etc/me-backup/tasks.yaml] ") or '/etc/me-backup/tasks.yaml'
         log_path = input("Log path: [/etc/me-backup/mebk.log] ") or '/etc/me-backup/mebk.log'
         log_level = input("Log level: [INFO] ") or 'INFO'
