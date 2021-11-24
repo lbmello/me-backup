@@ -9,7 +9,7 @@ class config:
         if self.is_config_exist():
             self.config_file = open(self.config_path, 'r')
             self.config_lines = self.config_file.readlines()
-            #self.config_file = open(self.config_path, 'w+')
+            self.config_file.close()
         else:
             self.config_file = open(self.config_path, 'w+')
             self.create_config_file()
@@ -18,12 +18,15 @@ class config:
 
 
     def _write_lines(self):
+        config_file = open(self.config_path, 'w')
+
         new_lines = list()
 
         for key, value in self.config_values.items():
             new_lines.append(f'{key} = {value}\n')
 
-        self.config_file.writelines(new_lines)
+        config_file.writelines(new_lines)
+        config_file.close()
 
 
     def close_file(self):
@@ -34,7 +37,6 @@ class config:
         if self.config_values['instaled'] == 'False' or 'false':
             self.config_values['instaled'] = 'True'
             self._write_lines()
-            self.close_file()
 
 
     def process_config_lines(self):
