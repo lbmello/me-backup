@@ -1,5 +1,6 @@
 
 import click
+import logging
 import os
 
 from .install import install as _install
@@ -52,7 +53,6 @@ class cli:
             )
 
             self.instaled = i.validate_installation()
-            print(f'status do instaled {type(self.instaled)}')
 
             # TODO: Ajust this part to read a boolean, not string
             if not self.instaled:
@@ -60,9 +60,8 @@ class cli:
                 #i.set_instaled_true()
                 i.fill_default_task_file()
 
-            i.close_file()
+            #i.close_file()
             
-        print('instaled', self.instaled)
 
         # TODO: Ajust this part to read a boolean, not string
         if self.instaled == 'false' or self.instaled == 'False':

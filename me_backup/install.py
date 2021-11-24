@@ -5,7 +5,6 @@ import logging
 from shutil import chown
 
 
-
 class install:
 
     def __init__(self, config, config_obj):
@@ -95,6 +94,9 @@ class install:
         if not default_task_lines:
             with open(f"{self.config['task_file']}", 'a') as f:
                 f.writelines(example_task_lines)
+                logging.info(f"{self.config['task_file']} filled with task_example.yaml data.")
+        else:
+            logging.info(f"{self.config['task_file']} already created, not needed to fill data with task_example.yaml.")
             
 
     def install_dependencies(self):

@@ -5,7 +5,6 @@ import os
 class config:
     def __init__(self, config_path):
         self.config_path = config_path
-        print(self.config_path)
 
         if self.is_config_exist():
             self.config_file = open(self.config_path, 'r')
@@ -28,7 +27,6 @@ class config:
 
 
     def close_file(self):
-        print('fechado')
         self.config_file.close()
 
 
@@ -36,6 +34,7 @@ class config:
         if self.config_values['instaled'] == 'False' or 'false':
             self.config_values['instaled'] = 'True'
             self._write_lines()
+            self.close_file()
 
 
     def process_config_lines(self):
