@@ -55,9 +55,7 @@ class cli:
             self.instaled = i.validate_installation()
 
             if not self.instaled:
-                i.create_crontab_files()
-                i.set_instaled_true()
-                i.fill_default_task_file()
+                i.full_install()
             
 
         # TODO: Ajust this part to read a boolean, not string

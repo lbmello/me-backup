@@ -20,7 +20,31 @@ class install:
             f"{self.config['log_path']}",
         ]
 
-  
+
+    def full_install(self):
+        """Run a the full installation."""
+
+        self._create_crontab_files()
+        #self._set_instaled_true()
+        self._fill_default_task_file()
+        self._create_alias()
+
+
+    def _create_alias(self):
+        shell = self.config['default_shell']
+
+        shell_reference = "\n# me-backup alias\n"
+        alias = f"alias me-backup='/bin/python3 -m me_backup'\n"
+
+        shell_file = open(shell, "r+")
+        shell_lines = shell_file.readlines()
+
+        if (shell_reference not in shell_lines) and (alias not in shell_lines):
+            shell_file.writelines([shell_reference, alias])
+
+        shell_file.close()
+
+
     def validate_installation(self):
         """Check if the instaled parameter is true in config file."""
 
@@ -35,19 +59,13 @@ class install:
         return self.instaled
 
 
-    def close_file(self):
-        """Close cofnig file."""
-
-        self.config_obj.close_file()
-
-
-    def set_instaled_true(self):
+    def _set_instaled_true(self):
         """Set instaled as true in config file."""
 
         self.config_obj.set_instaled_true()
 
 
-    def create_crontab_files(self):
+    def _create_crontab_files(self):
         """Create crontab file to default_user in config file."""
 
         for file in self.files:
@@ -84,7 +102,7 @@ class install:
                 logging.error(f"Generic error while change owner of file {file}.")
 
             
-    def fill_default_task_file(self):
+    def _fill_default_task_file(self):
         """Fill the default task_file with task_example.yaml data."""
 
         module_path = path.abspath(path.dirname(__file__))

@@ -67,15 +67,17 @@ class config:
 
         current_user =  os.getlogin()
 
-        user = input(f"Default User: [{current_user}] ") or f"{current_user}",
-        task_file = input("Task file: [/etc/me-backup/tasks.yaml] ") or '/etc/me-backup/tasks.yaml'
-        log_path = input("Log path: [/etc/me-backup/mebk.log] ") or '/etc/me-backup/mebk.log'
-        log_level = input("Log level: [INFO] ") or 'INFO'
-        default_host = input("Default host: [127.0.0.1] ") or '127.0.0.1'
-        default_crontab_path = input(f"Default crontab path: [/var/spool/{user[0]}] ") or f"/var/spool/{user[0]}"
+        user = input(f"Default User: [{current_user}] ") or f"{current_user}"
+        default_shell = input(f"Users shell rc: [/home/{current_user}/.zshrc]") or f"/home/{current_user}/.zshrc"
+        task_file = input(f"Task file: [/etc/me-backup/tasks.yaml] ") or f"/etc/me-backup/tasks.yaml"
+        log_path = input(f"Log path: [/etc/me-backup/mebk.log] ") or f"/etc/me-backup/mebk.log"
+        log_level = input(f"Log level: [INFO] ") or f'INFO'
+        default_host = input(f"Default host: [127.0.0.1] ") or f"127.0.0.1"
+        default_crontab_path = input(f"Default crontab path: [/var/spool/{user}") or f"/var/spool/{user}"
 
         lines = [
-            f"default_user = {user[0]}\n", 
+            f"default_user = {user}\n", 
+            f"default_shell = {default_shell}\n",
             f"task_file = {task_file}\n", 
             f"log_path = {log_path}\n",
             f"log_level = {log_level}\n",
