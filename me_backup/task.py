@@ -91,7 +91,7 @@ class task:
 
 
         # Type of execution select, sync of version the files at destination
-        # TODO: terminar implantação dessa parte, considerando como executar o sync e o versionh
+        # TODO: terminar implantação dessa parte, considerando como executar o sync completo e o versionado, com historico de versao
 
         if 'copy_config' in task:
             if task['copy_config']['type'] == 'sync':
