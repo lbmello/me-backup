@@ -11,9 +11,14 @@ from .log import log as _log
 from .task import task as _task
 from .utils import process_config_lines, is_config_exist, create_config_file
 
+from .server.server import Server
+from .agent.agent import Agent
 
 
 if __name__ == "__main__":
+    server = Server()
+    #agent = Agent()
+
     """
     if is_config_exist(CONFIG_PATH):
         conf_file = open(CONFIG_PATH, 'r')
