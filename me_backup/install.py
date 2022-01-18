@@ -25,7 +25,7 @@ class install:
         """Run a the full installation."""
 
         self._create_crontab_files()
-        #self._set_instaled_true()
+        self._set_instaled_true()
         self._fill_default_task_file()
         self._create_alias()
 

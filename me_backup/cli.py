@@ -59,14 +59,14 @@ class cli:
             
 
         # TODO: Ajust this part to read a boolean, not string
+        # TODO: Correct the read of task_example and reativate generate_yaml
+
         if self.instaled == 'false' or self.instaled == 'False':
             main_cli.add_command(install)
         else:
             main_cli.add_command(now)
             main_cli.add_command(schedule)
             main_cli.add_command(rsync)
-            main_cli.add_command(generate_yaml)
-        
-                
+            #main_cli.add_command(generate_yaml)
         
         main_cli()
