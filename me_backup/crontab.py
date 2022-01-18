@@ -14,24 +14,44 @@ class cron:
 
 
     def _attach_crontab(self):
-        """Add the source to project's crontab file into /etc/crontab."""
+        """Add the runnable part in the crontab file configured."""
 
-        # TODO: alterar do crontab geral para o usuário (crontab -e)
-
-        cron_reference = "# me-backup source\n"
+        cron_reference = "# me-backup commands\n"
         source = f"source {self.path}\n"
         
-        cron_file = open('/etc/crontab', 'r+')
-        cron_lines = cron_file.readlines()
-        
+        # Write the reference and the commands to file in /etc/crontab
         if self.path == '/etc/crontab':
-            for line in cron_lines:
-                if (cron_reference in line) and (self.commands not in cron_lines):
-                    cron_file.write(self.commands)
+            cron_file = open(self.path, 'r+')
+            cron_lines = cron_file.readlines()
+            
+            if (cron_reference in cron_lines) and (self.commands not in cron_lines):
+                cron_file.write(self.commands)
+
+            elif (cron_reference not in cron_lines) and (self.commands not in cron_lines):
+                cron_file.write(f"{cron_reference}{self.commands}")
+
+        # Write the reference and the commands to file in /var/spool/cron/[default_user]
+        elif self.path == f"/var/spool/cron/{self.user}":
+            cron_file = open(self.path, 'r+')
+            cron_lines = cron_file.readlines()
+            
+            if (self.commands not in cron_lines):
+                cron_file.write(self.commands)
+        
+        # Create custom file in default_crontab_path location 
         else:
-            for line in cron_lines:
-                if (cron_reference in line) and (source not in cron_lines):
-                    cron_file.write(source)
+            custom_crontab = open(self.path, 'w')
+            custom_crontab.write(self.commands)
+
+            # Write the reference and input the source to file in /etc/crontab
+            cron_file = open('/etc/crontab', 'r+')
+            cron_lines = cron_file.readlines()
+
+            if (cron_reference in cron_lines) and (self.commands not in cron_lines):
+                cron_file.write(self.commands)
+
+            elif (cron_reference not in cron_lines) and (self.commands not in cron_lines):
+                cron_file.write(f"{cron_reference}{source}")
 
         cron_file.close()
 
