@@ -5,48 +5,51 @@ import yaml
 
 class backup:
 
-    def __init__(self, source, destination, exclude, remote_dst, remote_src):
-        self.source = source
-        self.destination = destination
+    def __init__(self, exclude):
         self.exclude = exclude
-        self.remote_dst = remote_dst
-        self.remote_src = remote_src
 
 
-    def create_remote_rsync(self, host, user):
+    def create_remote_rsync(self, remote_src, source, src_host, remote_dst, destination, dst_host, user):
         """Create rsync full command with ssh connection."""
 
-        self.host = host
+        self.remote_src = remote_src
+        self.source = source
+        self.src_host = src_host
+
+        self.remote_dst = remote_dst
+        self.destination = destination
+        self.dst_host = dst_host
+        
         self.user = user
 
         if not self.remote_src and self.remote_dst:
             if self.exclude != None:
-                cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.user}@{self.host}:{self.destination}"
+                cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.user}@{self.dst_host}:{self.destination}"
             else:
-                cmd = f"rsync -av {self.source} {self.user}@{self.host}:{self.destination}"
+                cmd = f"rsync -av {self.source} {self.user}@{self.dst_host}:{self.destination}"
 
         elif self.remote_src and not self.remote_dst:
             if self.exclude != None:
-                cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.user}@{self.host}:{self.source} {self.destination}"
+                cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.user}@{self.src_host}:{self.source} {self.destination}"
             else:
-                cmd = f"rsync -av {self.user}@{self.host}:{self.source} {self.destination}"
+                cmd = f"rsync -av {self.user}@{self.src_host}:{self.source} {self.destination}"
 
         elif self.remote_src and self.remote_dst:
             if self.exclude != None:
-                cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.user}@{self.host}:{self.source} {self.user}@{self.host}:{self.destination}"
+                cmd = f"rsync -av --exclude={self._create_exclude_pattern()} {self.user}@{self.src_host}:{self.source} {self.user}@{self.dst_host}:{self.destination}"
             else:
-                cmd = f"rsync -av {self.user}@{self.host}:{self.source} {self.user}@{self.host}:{self.destination}"
+                cmd = f"rsync -av {self.user}@{self.src_host}:{self.source} {self.user}@{self.dst_host}:{self.destination}"
 
         return cmd
 
 
-    def create_rsync(self):
+    def create_rsync(self, source, destination):
         """Create rsync full command with local src and dst."""
 
         if self.exclude != None:
-            cmd = f"""rsync -av --exclude={self._create_exclude_pattern()} {self.source} {self.destination}"""
+            cmd = f"""rsync -av --exclude={self._create_exclude_pattern()} {source} {destination}"""
         else:
-            cmd = f"""rsync -av {self.source} {self.destination}"""
+            cmd = f"""rsync -av {source} {destination}"""
         
         return cmd
 

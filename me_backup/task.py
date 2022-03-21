@@ -13,10 +13,62 @@ class task:
     def __init__(self, task, global_config):
         self.name = task['name']
         self.slug = task['slug']
-        self.src = task['src']
-        self.dst = task['dst']
         self.frequency = task['frequency']
 
+        # Check if its a local or remote task to set source and destination
+        if 'src' in task:
+            self.src = task['src']
+        elif 'src_path' in task:
+            self.src = task['src_path']
+        
+        if 'dst' in task:
+            self.dst = task['dst']
+        elif 'dst_path' in task:
+            self.dst = task['dst_path']
+
+        # Remote source check with their dependencies
+        if 'remote_src' in task:
+            self.remote_src = task['remote_src']
+            if self.remote_src:
+                
+                if 'src_path' in task:
+                    self.src = task['src_path']
+                else:
+                    logging.error(f"src_path not informed in task {self.name}")
+
+                if 'src_host' in task:
+                    self.src_host = task['src_host']
+                else:
+                    self.src_host = None
+                    logging.error(f"src_host not informed in task {self.name}")
+            else:
+                self.src_host = None
+
+        else:
+            self.remote_src = False
+
+        # Remote destination check with their dependencies
+        if 'remote_dst' in task:
+            self.remote_dst = task['remote_dst']
+            if self.remote_dst:
+                
+                if 'dst_path' in task:
+                    self.dst = task['dst_path']
+                else:
+                    logging.error(f"dst_path not informed in task {self.name}")
+
+                if 'dst_host' in task:
+                    self.dst_host = task['dst_host']
+                else:
+                    self.dst_host = None
+                    logging.error(f"dst_host not informed in task {self.name}")
+            else:
+                self.dst_host = None
+        else:
+            self.remote_dst = False
+
+        # TODO: VALIDAR SE PRECISO DESSE PARAMETRO HOST
+        """
         # Global check - Verify if host, user and frequency are informed in global or task section
         if 'host' in task:
             self.host = task['host']
@@ -24,6 +76,7 @@ class task:
             self.host = global_config['default_host']
         else:
             logging.debug(f'Host of task {self.name} and global host not informed.')
+        """
  
 
         if 'user' in task:
@@ -57,22 +110,6 @@ class task:
             self.frequency = global_config['default_frequency']
         else:
             logging.debug(f"Frequency of task {self.name} and global frequency not informed.")
-
-
-        if 'remote_src' in task:
-            self.remote_src = task['remote_src']
-        elif 'remote_src' in global_config:
-            self.remote_src = global_config['remote_src']
-        else:
-            self.remote_src = False
-
-
-        if 'remote_dst' in task:
-            self.remote_dst = task['remote_dst']
-        elif 'remote_dst' in global_config:
-            self.remote_dst = global_config['remote_dst']
-        else:
-            self.remote_dst = False
 
         
         # Task checks - Verify if exclude was informed
@@ -158,23 +195,27 @@ class task:
         """Instance backup object and get the return of create_rsync function."""
         
         bkp = _backup(
-            source = self.src,
-            destination = self.dst, 
             exclude = self.exclude,
-            remote_dst = self.remote_dst,
-            remote_src = self.remote_src
         )
 
         # If remote src and dst are False, create rsync commands locally
         if not self.remote_src and not self.remote_dst:
-            self.rsync = bkp.create_rsync()
+            self.rsync = bkp.create_rsync(
+                source = self.src,
+                destination = self.dst, 
+            )
         
-        # If host and user are informed, create remote rsync
-        elif self.host and self.user:
+        # If , create remote rsync
+        elif (self.src and self.dst and self.user):
             self.rsync = bkp.create_remote_rsync(
-                host = self.host, 
-                user = self.user,
+                remote_src = self.remote_src, 
+                source = self.src,
+                src_host = self.src_host, 
+                remote_dst = self.remote_dst, 
+                destination = self.dst, 
+                dst_host = self.dst_host, 
+                user = self.user
             )
             
         else:
-            logging.error(f"error to process rsync logic.")
+            logging.error(f"error to process rsync logic in the task {self.name}.")
