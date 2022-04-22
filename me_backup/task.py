@@ -124,7 +124,8 @@ class task:
         if 'wake_on_lan' in task:
             self.wol_enabled = task['wake_on_lan']['enabled']
             self.wol_mac_address = task['wake_on_lan']['mac_address']
-            self.wol_run()
+            self.wol_ip = task['wake_on_lan']['ip']
+            self._wol_run()
 
 
         # Type of execution select, sync of version the files at destination
@@ -181,15 +182,14 @@ class task:
         print(self.rsync)
 
 
-    def wol_run(self):
+    def _wol_run(self):
         """Instance wake_on_lan and run method to send meagic packet."""
 
         if self.wol_enabled:
             wol = _wol(
-                mac_address = self.wol_mac_address 
+                mac_address = self.wol_mac_address,
+                ip = self.wol_ip 
             )
-
-            wol.send_package()
 
 
     def _process_rsync_commands(self):

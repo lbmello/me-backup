@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "me_backup"
-version = "0.1.22"
+version = "0.1.24"
 description = "Simple linux backup controled by a YAML file."
 authors = ["Lucas <lucasbmello96@gmail.com>"]
 readme = "README.md"
@@ -13,6 +13,7 @@ PyYAML = "latest"
 python-crontab = "^2.5.1"
 click = "^8.0.1"
 wakeonlan = "^2.0.1"
+pythonping = "^1.1.1"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.9.6"
