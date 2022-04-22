@@ -153,6 +153,7 @@ class task:
         self.cron = _cron(
             commands = self.rsync,
             frequency = self.frequency,
+            task_name = self.name,
             path = self.crontab_path,
             user = self.user
         )
